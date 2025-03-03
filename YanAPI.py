@@ -1,0 +1,2 @@
+class YandexAPI:
+    pass
