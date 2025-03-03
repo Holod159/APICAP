@@ -2,6 +2,7 @@ from io import BytesIO
 
 import requests
 from PIL import Image
+from PyQt6.QtGui import QImage
 
 
 class YandexAPI:
@@ -20,15 +21,15 @@ class YandexAPI:
         self.map_api_server = "https://static-maps.yandex.ru/v1"
         # ... и выполняем запрос
         response = requests.get(self.map_api_server, params=self.map_params)
-        self.map = Image.open(BytesIO(response.content))
+        self.map = QImage.fromData(response.content)
 
     def get_map(self):
         response = requests.get(self.map_api_server, params=self.map_params)
-        self.map = Image.open(BytesIO(response.content))
+        self.map = QImage.fromData(response.content)
         return self.map
 
 
 if __name__ == "__main__":
-    map = YandexAPI()
+    map = YandexAPI().get_map()
 
 
