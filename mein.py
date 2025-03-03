@@ -1,1 +1,1 @@
-print(1)
+from windows import Mein_Window
