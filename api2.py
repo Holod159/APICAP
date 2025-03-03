@@ -23,6 +23,8 @@ class YandexAPI:
         self.map = Image.open(BytesIO(response.content))
 
     def get_map(self):
+        response = requests.get(self.map_api_server, params=self.map_params)
+        self.map = Image.open(BytesIO(response.content))
         return self.map
 
 
