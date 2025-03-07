@@ -13,7 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.coord = (50.842588, 58.846908)
         self.delta = 17
-        self.step = 0.005
+        self.step = 0.001
         self.karta = YandexAPI()
         self.ready()
 
@@ -31,9 +31,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Up and self.delta < 17:
             self.delta += 1
+            self.step *= 0.5
             self.ready()
         elif event.key() == QtCore.Qt.Key.Key_Down and self.delta > 1:
             self.delta -= 1
+            self.step *= 2
             self.ready()
         elif event.key() == QtCore.Qt.Key.Key_D:
             self.coord = (self.coord[0] + self.step) % 360, self.coord[1]
