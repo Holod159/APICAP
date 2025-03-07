@@ -17,17 +17,20 @@ class YandexAPI:
         # self.map = QImage.fromData(response.content)
 
     def get_map(self, params: dict):
-        session = requests.Session()
-        retry = Retry(total=10, connect=5, backoff_factor=0.5)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
-        params['apikey'] = self.apikey
-        response = session.get('https://static-maps.yandex.ru/v1',
-                               params=params)
-        img = Image.open(BytesIO(response.content))
-        img.save('result.png')
-        return 'result.png'
+        try:
+            session = requests.Session()
+            retry = Retry(total=10, connect=5, backoff_factor=0.5)
+            adapter = HTTPAdapter(max_retries=retry)
+            session.mount('http://', adapter)
+            session.mount('https://', adapter)
+            params['apikey'] = self.apikey
+            response = session.get('https://static-maps.yandex.ru/v2',
+                                   params=params)
+            img = Image.open(BytesIO(response.content))
+            img.save('result.png')
+            return 'result.png'
+        except Exception as e:
+            return e
 
 
 if __name__ == "__main__":
