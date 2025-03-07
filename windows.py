@@ -12,18 +12,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.coord = (55.751574, 37.617728)
+        self.coord = (50.842588, 58.846908)
         self.delta = 17
         self.step = 0.005
         self.karta = YandexAPI()
         self.ready()
 
-    def param_creater(self, coord, zoom):
-        img = QImage.fromData(self.karta.get_map({"ll": ','.join(map(str, coord)), 'z': zoom}))
-        return img
+    def param_creater(self):
+        return {"ll": ','.join(map(str, self.coord)), 'z': self.delta}
 
     def ready(self):
-        self.map.setPixmap(QPixmap(self.param_creater(self.coord, self.delta)))
+        pix = self.karta.get_map(self.param_creater())
+        qpix = QPixmap(pix)
+        self.map.setPixmap(qpix)
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Up and self.delta < 17:
@@ -31,6 +32,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.ready()
         elif event.key() == QtCore.Qt.Key.Key_Down and self.delta > 1:
             self.delta -= 1
+            self.ready()
+        elif event.key() == QtCore.Qt.Key.Key_D:
+            self.coord = (self.coord[0] + self.step) % 360, self.coord[1]
+            self.ready()
+        elif event.key() == QtCore.Qt.Key.Key_A:
+            self.coord = (self.coord[0] - self.step) % 360, self.coord[1]
+            self.ready()
+        elif event.key() == QtCore.Qt.Key.Key_S:
+            self.coord = self.coord[0], (self.coord[1] - self.step / 2) % 180
+            self.ready()
+        elif event.key() == QtCore.Qt.Key.Key_W:
+            self.coord = self.coord[0], (self.coord[1] + self.step / 2) % 180
             self.ready()
 
 
