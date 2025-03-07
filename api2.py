@@ -26,7 +26,8 @@ class YandexAPI:
         response = session.get('https://static-maps.yandex.ru/v1',
                                params=params)
         img = Image.open(BytesIO(response.content))
-        return img
+        img.save('result.png')
+        return 'result.png'
 
 
 if __name__ == "__main__":
