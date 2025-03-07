@@ -25,7 +25,7 @@ class YandexAPI:
         params['apikey'] = self.apikey
         response = session.get('https://static-maps.yandex.ru/v1',
                                params=params)
-        img = response.content
+        img = Image.open(BytesIO(response.content))
         return img
 
 
@@ -36,4 +36,4 @@ if __name__ == "__main__":
         "z": 10
     }
 
-    map = YandexAPI().get_map(map_params)
+    map = YandexAPI().get_map(map_params).show()
