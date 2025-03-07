@@ -1,8 +1,9 @@
 import sys
+
 from PyQt6 import uic, QtCore
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from PyQt6.QtWidgets import QLabel, QPushButton
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QImage
 from window import Ui_MainWindow
 from api2 import YandexAPI
 
@@ -18,7 +19,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ready()
 
     def param_creater(self, coord, zoom):
-        return self.karta.get_map({"ll" : ','.join(map(str, coord)), 'z': zoom})
+        img = QImage.fromData(self.karta.get_map({"ll": ','.join(map(str, coord)), 'z': zoom}))
+        return img
 
     def ready(self):
         self.map.setPixmap(QPixmap(self.param_creater(self.coord, self.delta)))
