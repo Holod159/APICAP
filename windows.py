@@ -1,9 +1,8 @@
 import sys
 
-from PyQt6 import uic, QtCore
+from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication, QMainWindow
-from PyQt6.QtWidgets import QLabel, QPushButton
-from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtGui import QPixmap
 from window import Ui_MainWindow
 from api2 import YandexAPI
 
@@ -23,8 +22,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def ready(self):
         pix = self.karta.get_map(self.param_creater())
-        qpix = QPixmap(pix)
-        self.map.setPixmap(qpix)
+        if pix != 'result.png':
+            self.map.setText(pix)
+        else:
+            pix = QPixmap(pix)
+            self.map.setPixmap(pix)
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Up and self.delta < 17:
