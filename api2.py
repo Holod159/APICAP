@@ -25,7 +25,7 @@ class YandexAPI:
         params['apikey'] = self.apikey
         response = session.get('https://static-maps.yandex.ru/v1',
                                params=params)
-        img = QImage.fromData(response.content)
+        img = response.content
         return img
 
 
