@@ -12,19 +12,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.coord = (55.751574, 37.617728)
+        self.delta = 17
         self.step = 0.005
         self.karta = YandexAPI()
         self.ready()
 
+    def param_creater(self, coord, zoom):
+        return self.karta.get_map({"ll" : ','.join(map(str, coord)), 'z': zoom})
+
     def ready(self):
-        self.map.setPixmap(QPixmap(self.karta.get_map()))
+        self.map.setPixmap(QPixmap(self.param_creater(self.coord, self.delta)))
 
     def keyPressEvent(self, event):
-        if event.key() == QtCore.Qt.Key.Key_Up:
-            self.coord = self.coord[0] + self.step, self.coord[1] + self.step
+        if event.key() == QtCore.Qt.Key.Key_Up and self.delta < 17:
+            self.delta += 1
             self.ready()
-        elif event.key() == QtCore.Qt.Key.Key_Down:
-            self.coord = self.coord[0] - self.step, self.coord[1] - self.step
+        elif event.key() == QtCore.Qt.Key.Key_Down and self.delta > 1:
+            self.delta -= 1
             self.ready()
 
 
